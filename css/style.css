@@ -1,0 +1,203 @@
+/* Code Crusade – Vyugam 2.0
+ * Shared tokens + components (used by every page) and the home page.
+ *
+ * Palette is drawn from the Chakravyuha idea behind the name "Vyugam":
+ * deep plum field, brass-gold lines. Difficulty colours are kept away from
+ * the gold so they never read as the brand accent.
+ */
+
+:root {
+  --bg: #1a1024;
+  --surface: #241833;
+  --raised: #2e2042;
+  --editor: #130a1b;
+  --line: #43315c;
+  --line-soft: #34254a;
+  --text: #f4ece0;
+  --muted: #a99cbf;
+  --gold: #f2b441;
+  --gold-hi: #ffca63;
+  --gold-ink: #1a1024;
+  --easy: #4fd1a1;
+  --medium: #62b4ff;
+  --hard: #ff6b81;
+  --ok: #4fd1a1;
+  --danger: #ff6b81;
+
+  --font-display: "Rajdhani", "Segoe UI", system-ui, sans-serif;
+  --font-body: "Hanken Grotesk", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, p, dl, dd { margin: 0; }
+button, input, select, textarea { font: inherit; color: inherit; }
+a { color: var(--gold); }
+
+:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+
+[hidden] { display: none !important; }
+
+.visually-hidden {
+  position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+
+/* ---------- Buttons ---------- */
+
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: .5rem;
+  padding: .7rem 1.25rem;
+  border: 1px solid transparent; border-radius: 8px;
+  font-family: var(--font-display); font-weight: 700; font-size: 1.05rem; letter-spacing: .06em;
+  text-decoration: none; cursor: pointer;
+  transition: background-color .15s, border-color .15s, color .15s, transform .1s;
+}
+.btn:active:not([disabled]) { transform: translateY(1px); }
+.btn[disabled] { opacity: .5; cursor: not-allowed; }
+
+.btn-primary { background: var(--gold); color: var(--gold-ink); }
+.btn-primary:hover:not([disabled]) { background: var(--gold-hi); }
+
+.btn-ghost { background: transparent; border-color: var(--line); color: var(--text); }
+.btn-ghost:hover:not([disabled]) { border-color: var(--gold); color: var(--gold-hi); }
+
+.btn-danger { background: transparent; border-color: var(--danger); color: var(--danger); }
+.btn-danger:hover:not([disabled]) { background: var(--danger); color: var(--gold-ink); }
+
+.btn-small { padding: .35rem .75rem; font-size: .95rem; }
+.btn-block { width: 100%; }
+
+/* ---------- Forms ---------- */
+
+.field { display: grid; gap: .4rem; }
+.field > label, .field > .label { font-weight: 600; font-size: .95rem; }
+
+.input, .select, .textarea {
+  width: 100%;
+  padding: .7rem .85rem;
+  background: var(--editor);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  color: var(--text);
+  transition: border-color .15s;
+}
+.input::placeholder, .textarea::placeholder { color: #9082a8; }
+.input:hover, .select:hover, .textarea:hover { border-color: #5b4778; }
+.input:focus-visible, .select:focus-visible, .textarea:focus-visible {
+  outline: none; border-color: var(--gold); box-shadow: 0 0 0 2px rgba(242, 180, 65, .35);
+}
+.input[aria-invalid="true"] { border-color: var(--danger); }
+.input[readonly] { color: var(--muted); }
+.textarea { resize: vertical; line-height: 1.5; }
+.textarea.mono, .mono { font-family: var(--font-mono); font-size: .9rem; }
+
+.field-error { min-height: 1.3rem; color: var(--danger); font-size: .875rem; }
+.hint { color: var(--muted); font-size: .85rem; }
+
+.form-error {
+  padding: .7rem .9rem;
+  border: 1px solid var(--danger); border-radius: 8px;
+  background: rgba(255, 107, 129, .1); color: #ffd3da; font-size: .95rem;
+}
+
+/* ---------- Dialog ---------- */
+
+dialog {
+  padding: 0; width: min(94vw, 520px); max-height: 92dvh;
+  background: var(--surface); color: var(--text);
+  border: 1px solid var(--line); border-radius: 14px;
+}
+dialog::backdrop { background: rgba(12, 5, 18, .74); }
+.dialog-body { display: grid; gap: 1rem; padding: 1.5rem; }
+.dialog-body h2 { font-family: var(--font-display); font-size: 1.6rem; line-height: 1.15; }
+.dialog-actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: .75rem; }
+
+/* ---------- Toasts ---------- */
+
+.toasts {
+  position: fixed; right: 1rem; bottom: 1rem; z-index: 100;
+  display: grid; gap: .5rem; width: min(calc(100vw - 2rem), 380px);
+}
+.toast {
+  padding: .75rem 1rem;
+  background: var(--raised); border: 1px solid var(--line); border-radius: 10px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, .4);
+  animation: toast-in .2s ease-out;
+}
+.toast-success { border-color: var(--ok); }
+.toast-error { border-color: var(--danger); }
+.toast-warning { border-color: var(--gold); }
+.toast-out { opacity: 0; transition: opacity .25s; }
+@keyframes toast-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+
+/* ---------- Home page ---------- */
+
+.home-main {
+  position: relative; isolation: isolate; overflow: hidden;
+  min-height: 100dvh;
+  display: grid; place-items: center;
+  padding: clamp(1.5rem, 5vw, 3rem) 1rem;
+}
+
+/* The Chakravyuha: seven ringed walls, each with one gap.
+   On load the rings rotate into formation and lock in place. */
+.formation {
+  position: absolute; z-index: -1; top: 50%; left: 50%;
+  width: min(150vmin, 1100px); aspect-ratio: 1;
+  transform: translate(-50%, -52%);
+  color: var(--gold); opacity: .3; pointer-events: none;
+}
+.ring {
+  transform-box: fill-box; transform-origin: center;
+  transform: rotate(var(--to));
+  animation: ring-lock 1.7s cubic-bezier(.2, .8, .2, 1) both;
+  animation-delay: calc(var(--i) * 140ms);
+}
+@keyframes ring-lock {
+  from { transform: rotate(var(--from)); opacity: 0; }
+  to   { transform: rotate(var(--to));   opacity: 1; }
+}
+
+.home-inner { width: min(100%, 900px); display: grid; justify-items: center; }
+
+.hero { display: grid; gap: .25rem; margin-bottom: 2rem; text-align: center; }
+.hero-event {
+  font-family: var(--font-display); font-weight: 600;
+  font-size: clamp(1.1rem, 3vw, 1.6rem);
+  letter-spacing: .42em; padding-left: .42em; color: var(--gold);
+}
+.hero-title {
+  font-family: var(--font-display); font-weight: 700;
+  font-size: clamp(2.9rem, 12.5vw, 7.5rem);
+  line-height: .9; letter-spacing: .02em;
+}
+.hero-sub { margin-top: .75rem; color: var(--muted); font-size: clamp(1rem, 2.4vw, 1.2rem); }
+
+.start-card {
+  display: grid; gap: 1.1rem;
+  width: min(100%, 460px);
+  padding: clamp(1.25rem, 4vw, 1.75rem);
+  background: var(--surface); border: 1px solid var(--line); border-radius: 14px;
+}
+.start-card .field-label { font-family: var(--font-display); font-weight: 700; font-size: 1.15rem; letter-spacing: .04em; }
+.start-note { color: var(--muted); font-size: .9rem; text-align: center; }
+
+@media (prefers-reduced-motion: reduce) {
+  .ring { animation: none; }
+  .toast { animation: none; }
+  .btn { transition: none; }
+}
